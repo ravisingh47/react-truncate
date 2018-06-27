@@ -131,8 +131,10 @@ export default class Truncate extends Component {
         }
 
         // Floor the result to deal with browser subpixel precision
+        const targetParentStyles = window.getComputedStyle(target.parentNode);
+        const targetParentPadding = parseFloat(targetParentStyles.paddingLeft) + parseFloat(targetParentStyles.paddingRight);
         const targetWidth = Math.floor(
-            target.parentNode.getBoundingClientRect().width
+            target.parentNode.getBoundingClientRect().width - targetParentPadding
         );
 
         // Delay calculation until parent node is inserted to the document
