@@ -10,14 +10,16 @@ export default class Truncate extends Component {
             PropTypes.number
         ]),
         trimWhitespace: PropTypes.bool,
-        onTruncate: PropTypes.func
+        onTruncate: PropTypes.func,
+        extraWidthReduction: PropTypes.number
     };
 
     static defaultProps = {
         children: '',
         ellipsis: '…',
         lines: 1,
-        trimWhitespace: false
+        trimWhitespace: false,
+        extraWidthReduction: 0
     };
 
     state = {};
@@ -125,6 +127,10 @@ export default class Truncate extends Component {
             canvasContext
         } = this;
 
+        const {
+            extraWidthReduction
+        } = this.props;
+
         // Calculation is no longer relevant, since node has been removed
         if (!target) {
             return;
@@ -134,7 +140,7 @@ export default class Truncate extends Component {
         const targetParentStyles = window.getComputedStyle(target.parentNode);
         const targetParentPadding = parseFloat(targetParentStyles.paddingLeft) + parseFloat(targetParentStyles.paddingRight);
         const targetWidth = Math.floor(
-            target.parentNode.getBoundingClientRect().width - targetParentPadding
+            target.parentNode.getBoundingClientRect().width - targetParentPadding - extraWidthReduction
         );
 
         // Delay calculation until parent node is inserted to the document
